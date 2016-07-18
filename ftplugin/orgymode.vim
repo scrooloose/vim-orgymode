@@ -10,4 +10,5 @@ inoremap <buffer> <c-c> <space><backspace><c-o>:call g:CheckBox.NewOnCurLine()<c
 
 setl sw=4 sts=4 et
 syntax sync minlines=50
-set conceallevel=2
+setl conceallevel=2
+setl foldmethod=expr foldexpr=MarkdownFold()
