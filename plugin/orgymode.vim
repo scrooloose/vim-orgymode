@@ -75,6 +75,7 @@ endfunction
 
 function! s:CheckBox.check() abort
     exec self.lnum . 's/\[_\]/[X]/e'
+    exec self.lnum . 's/\[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . s:timeStamp() . '/e'
 
     if self.allSiblingsChecked()
         let p = self.parent()
@@ -200,4 +201,8 @@ function! s:CheckBox.parent() abort
         let curLine = curLine - 1
         let curCheck = s:CheckBox.FromLine(curLine)
     endwhile
+endfunction
+
+function s:timeStamp()
+    return strftime("%d, %b")
 endfunction

@@ -4,13 +4,13 @@ syn match checkbox #\[[_]\] #he=e-1 contains=checkboxinner containedin=markdownC
 syn match checkboxinner #[_]#
 syn region todoNotDone start=#\[[_]\] # end=#\(^\s*$\|^\ze.*\[[X_]\]\)# contains=checkbox,markdownListMarker,markdownLinkText containedin=markdownCodeBlock
 syn region todoDone start=#\[[X]\] # end=#\(^\s*$\|^\ze.*\[[X_]\]\)# contains=checkbox containedin=markdownCodeBlock
-syn match todoCreateDate #| \d\{2\}, \w\{3\}# conceal containedin=todoNotDone,todoDone
+syn match todoMeta #| \d\{2\}, \w\{3\}\( > \d\{2\}, \w\{3\}\)\?# conceal containedin=todoNotDone,todoDone
 syn match todoCode #`[^`]\+`# containedin=todoNotDone
 
 hi def link checkbox Directory
 hi def link checkboxinner Statement
 hi def link todoNotDone Normal
 hi def link todoDone ignore
-hi def link todoCreateDate ignore
+hi def link todoMeta ignore
 hi def link todoCode string
 hi def link markdownCode string
