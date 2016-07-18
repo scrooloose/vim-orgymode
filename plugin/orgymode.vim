@@ -53,7 +53,6 @@ endfunction
 function! s:CheckBox.ToggleCurrent() abort
     let check = s:CheckBox.FromLine(line("."))
     if empty(check)
-        s/^\s*\zs/[_] /
         return
     endif
 
