@@ -10,7 +10,7 @@ syn match todoCode #`[^`]\+`# containedin=todoNotDone
 hi def link checkbox Directory
 hi def link checkboxinner Statement
 hi def link todoNotDone Normal
-hi def link todoDone ignore
-hi def link todoMeta ignore
+hi def link todoDone comment
+hi def link todoMeta comment
 hi def link todoCode string
 hi def link markdownCode string
