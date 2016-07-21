@@ -112,20 +112,28 @@ function! s:CheckBox.FromLine(lnum) abort
     while 1
         let curIndent = s:CheckBox.IndentFor(l)
 
-        if l =~ '^\s*\[[_X]\] '
-            if startIndent <= curIndent && lnum != a:lnum
+        let lineContainsCheck = l =~ '^\s*\[[_X]\] '
+
+        if lineContainsCheck
+            if startIndent != 0 && startIndent <= curIndent && lnum != a:lnum
+                "echo startIndent curIndent a:lnum
                 throw "FuckedFormattingError Obey the indent rules bitch"
             endif
 
             break
         endif
 
-        if empty(l)
+        "if on a line of non indented text, it cant be part of a todo
+        if !lineContainsCheck && curIndent == 0 && !empty(l)
             return {}
         endif
 
         let lnum  = lnum - 1
         let l = getline(lnum)
+
+        if lnum <= 0
+            return {}
+        endif
 
     endwhile
 
