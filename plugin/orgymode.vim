@@ -3,7 +3,7 @@ if exists("g:loaded_orgymode")
 endif
 let g:loaded_orgymode = 1
 
-autocmd bufenter,bufnewfile *.orgy,Orgyfile setf orgymode
+autocmd bufenter,bufnewfile *.orgy,Orgyfile.* setf markdown.orgymode
 
 "tell markdown ftplugin to enable its magic folding
 let g:markdown_folding=1
