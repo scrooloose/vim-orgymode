@@ -43,8 +43,8 @@ function! s:CheckBox.NewOnCurLine() abort
     let lnum = line(".")
 
 
-    if getline(lnum) !~ '^\s*\[[X_]\] '
-        s/^\s*\zs/[_] /
+    if getline(lnum) !~ '^\s*- \[[X ]\] '
+        s/^\s*\zs/[ ] /
         call s:CheckBox.Current().uncheck()
         keepjumps call cursor(lnum, col + 5)
     endif
@@ -64,18 +64,18 @@ endfunction
 function! s:CheckBox.toggle() abort
     let l = getline(self.lnum)
 
-    if l =~ '^\s*\[_\] '
+    if l =~ '^\s*- \[ \] '
         call self.check()
-    elseif l =~ '^\s*\[X\] '
+    elseif l =~ '^\s*- \[X\] '
         call self.uncheck()
     else
-        exec self.lnum . 's/^\s*\zs/[_] /'
+        exec self.lnum . 's/^\s*\zs/- [ ] /'
     endif
 endfunction
 
 function! s:CheckBox.check() abort
-    exec self.lnum . 's/\[_\]/[X]/e'
-    exec self.lnum . 's/\[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . s:timeStamp() . '/e'
+    exec self.lnum . 's/- \[ \]/- [X]/e'
+    exec self.lnum . 's/- \[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . s:timeStamp() . '/e'
 
     if self.allSiblingsChecked()
         let p = self.parent()
@@ -86,7 +86,7 @@ function! s:CheckBox.check() abort
 endfunction
 
 function! s:CheckBox.uncheck() abort
-    exec self.lnum . 's/\[X\]/[_]/e'
+    exec self.lnum . 's/- \[X\]/- [ ]/e'
     let p = self.parent()
     if !empty(p)
         call p.uncheck()
@@ -104,7 +104,7 @@ function! s:CheckBox.FromLine(lnum) abort
 
     "if we have a checkbox of the form
     "
-    "[_] top line
+    "[ ] top line
     "    more text in same box
     "    yet more
     "
@@ -112,11 +112,11 @@ function! s:CheckBox.FromLine(lnum) abort
     while 1
         let curIndent = s:CheckBox.IndentFor(l)
 
-        let lineContainsCheck = l =~ '^\s*\[[_X]\] '
+        let lineContainsCheck = l =~ '^\s*- \[[ X]\] '
 
         if lineContainsCheck
             if startIndent != 0 && startIndent <= curIndent && lnum != a:lnum
-                "echo startIndent curIndent a:lnum
+                echo startIndent curIndent a:lnum
                 throw "FuckedFormattingError Obey the indent rules bitch"
             endif
 
@@ -138,10 +138,10 @@ function! s:CheckBox.FromLine(lnum) abort
     endwhile
 
     return s:CheckBox.New({
-        \ 'checked': l =~ '^\s*\[X\] ',
+        \ 'checked': l =~ '^\s*- \[X\] ',
         \ 'indent': s:CheckBox.IndentFor(l),
         \ 'lnum': lnum,
-        \ 'content': substitute(getline(lnum),  '^\s*\[[X_]\] ', '', '')})
+        \ 'content': substitute(getline(lnum),  '^\s*- \[[X ]\] ', '', '')})
 endfunction
 
 function! s:CheckBox.IndentFor(s) abort
@@ -155,19 +155,21 @@ function! s:CheckBox.siblings() abort
         let curLine = line(".") + direction
         let curCheck = s:CheckBox.FromLine(curLine)
 
-        while !empty(curCheck) || empty(getline(curLine))
+        let twoEmptyLines = empty(getline(curLine)) && empty(getline(curLine + direction))
+
+        while !empty(curCheck) && !twoEmptyLines
+            if curLine < 1 || curLine > line("$")
+                break
+            endif
 
             if !empty(getline(curLine))
                 if curCheck.indent < self.indent
                     break
                 endif
 
-                if curCheck.indent == self.indent
+                "check for dups since a checkbox can have many lines of text
+                if curCheck.indent == self.indent && index(siblings, curCheck) == -1
                     call add(siblings, curCheck)
-                endif
-            else
-                if curLine < 1 || curLine > line("$")
-                    break
                 endif
             endif
 
@@ -176,7 +178,7 @@ function! s:CheckBox.siblings() abort
         endwhile
     endfor
 
-    return siblings
+    return uniq(siblings)
 endfunction
 
 function! s:CheckBox.allSiblingsChecked() abort
