@@ -1,5 +1,4 @@
 nnoremap <buffer> <c-c> :call g:CheckBox.ToggleCurrent()<cr>
-inoremap <buffer> <c-c> <space><backspace><c-o>:call g:CheckBox.NewOnCurLine()<cr>
 
 setl sw=4 sts=4 et
 syntax sync minlines=50
@@ -46,18 +45,6 @@ function! s:CheckBox.New(args)
     return newObj
 endfunction
 
-function! s:CheckBox.NewOnCurLine() abort
-    let col = col(".")
-    let lnum = line(".")
-
-
-    if getline(lnum) !~ '^\s*- \[[X ]\] '
-        s/^\s*\zs/[ ] /
-        call s:CheckBox.Current().uncheck()
-        keepjumps call cursor(lnum, col + 5)
-    endif
-endfunction
-
 function! s:CheckBox.ToggleCurrent() abort
     let check = s:CheckBox.FromLine(line("."))
     if empty(check)
@@ -70,14 +57,10 @@ function! s:CheckBox.ToggleCurrent() abort
 endfunction
 
 function! s:CheckBox.toggle() abort
-    let l = getline(self.lnum)
-
-    if l =~ '^\s*- \[ \] '
+    if !self.checked
         call self.check()
-    elseif l =~ '^\s*- \[X\] '
-        call self.uncheck()
     else
-        exec self.lnum . 's/^\s*\zs/- [ ] /'
+        call self.uncheck()
     endif
 endfunction
 
@@ -99,10 +82,6 @@ function! s:CheckBox.uncheck() abort
     if !empty(p)
         call p.uncheck()
     endif
-endfunction
-
-function! s:CheckBox.Current() abort
-    return s:CheckBox.FromLine(line("."))
 endfunction
 
 function! s:CheckBox.FromLine(lnum) abort
