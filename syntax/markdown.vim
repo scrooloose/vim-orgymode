@@ -1,5 +1,3 @@
-runtime! syntax/markdown.vim
-
 syn match checkbox #- \[[ ]\] #he=e-1 contains=checkboxinner containedin=markdownCodeBlock
 syn match checkboxinner #[ ]#
 syn region todoNotDone start=#- \[[ ]\] # end=#\(\n\n\n\|^\ze.*- \[[X ]\]\)# contains=checkbox,markdownListMarker,markdownLinkText containedin=markdownCodeBlock

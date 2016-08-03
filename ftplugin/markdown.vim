@@ -1,20 +1,27 @@
-if exists("g:loaded_orgymode")
+nnoremap <buffer> <c-c> :call g:CheckBox.ToggleCurrent()<cr>
+inoremap <buffer> <c-c> <space><backspace><c-o>:call g:CheckBox.NewOnCurLine()<cr>
+
+setl sw=4 sts=4 et
+syntax sync minlines=50
+setl conceallevel=2
+setl foldmethod=expr foldexpr=MarkdownFold()
+setl spell
+
+if exists("g:loaded_orgymode_ftplugin")
     finish
 endif
-let g:loaded_orgymode = 1
-
-autocmd bufenter,bufnewfile *.orgy,Orgyfile.* setf markdown.orgymode
+let g:loaded_orgymode_ftplugin = 1
 
 "tell markdown ftplugin to enable its magic folding
 let g:markdown_folding=1
 
 command! -nargs=0 OrgyToggle call <sid>toggleOrgy()
 function! s:toggleOrgy() abort
-    let winnr = bufwinnr("Orgyfile")
+    let winnr = bufwinnr("Orgyfile.md")
     if winnr > 0
         exec winnr . "wincmd c"
     else
-        botright 78vs Orgyfile
+        botright 78vs Orgyfile.md
         setl wfw
         setl nonu
 
@@ -76,7 +83,7 @@ endfunction
 
 function! s:CheckBox.check() abort
     exec self.lnum . 's/- \[ \]/- [X]/e'
-    exec self.lnum . 's/- \[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . s:timeStamp() . '/e'
+    exec self.lnum . 's/- \[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . strftime("%d, %b") . '/e'
 
     if self.allSiblingsChecked()
         let p = self.parent()
@@ -212,8 +219,4 @@ function! s:CheckBox.parent() abort
         let curLine = curLine - 1
         let curCheck = s:CheckBox.FromLine(curLine)
     endwhile
-endfunction
-
-function s:timeStamp()
-    return strftime("%d, %b")
 endfunction
