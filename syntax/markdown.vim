@@ -1,14 +1,14 @@
-syn match checkbox #- \[[ ]\] #he=e-1 contains=checkboxinner containedin=markdownCodeBlock
-syn match checkboxinner #[ ]#
-syn region todoNotDone start=#- \[[ ]\] # end=#\(\n\n\n\|^\ze.*- \[[X ]\]\)# contains=checkbox,markdownListMarker,markdownLinkText containedin=markdownCodeBlock
-syn region todoDone start=#- \[[X]\] # end=#\(\n\n\n\|^\ze.*- \[[X ]\]\)# contains=checkbox containedin=markdownCodeBlock
-syn match todoMeta #| \d\{2\}, \w\{3\}\( > \d\{2\}, \w\{3\}\)\?# conceal containedin=todoNotDone,todoDone
-syn match todoCode #`[^`]\+`# containedin=todoNotDone
+syn match markdownCheckbox #- \[[ ]\] #he=e-1 contains=markdownCheckboxInner containedin=markdownCodeBlock
+syn match markdownCheckboxInner #[ ]#
+syn region markdownTodo start=#- \[[ ]\] # end=#\(\n\n\n\|^\ze.*- \[[X ]\]\)# contains=markdownCheckbox,markdownListMarker,markdownLinkText containedin=markdownCodeBlock
+syn region markdownTodoDone start=#- \[[X]\] # end=#\(\n\n\n\|^\ze.*- \[[X ]\]\)# contains=markdownCheckbox containedin=markdownCodeBlock
+syn match markdownTodoMeta #| \d\{2\}, \w\{3\}\( > \d\{2\}, \w\{3\}\)\?# conceal containedin=markdownTodo,markdownTodoDone
+syn match markdownTodoCode #`[^`]\+`# containedin=markdownTodo
 
-hi def link checkbox Directory
-hi def link checkboxinner Statement
-hi def link todoNotDone Normal
-hi def link todoDone comment
-hi def link todoMeta comment
-hi def link todoCode string
+hi def link markdownCheckbox Directory
+hi def link markdownCheckboxInner Statement
+hi def link markdownTodo Normal
+hi def link markdownTodoDone comment
+hi def link markdownTodoMeta comment
+hi def link markdownTodoCode string
 hi def link markdownCode string
