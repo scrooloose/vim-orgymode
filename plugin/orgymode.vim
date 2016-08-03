@@ -14,8 +14,9 @@ function! s:toggleOrgy() abort
     if winnr > 0
         exec winnr . "wincmd c"
     else
-        topleft 20sp Orgyfile
-        setl wfh
+        botright 78vs Orgyfile
+        setl wfw
+        setl nonu
 
         "hack to make nerdtree et al not split the window
         setl previewwindow
