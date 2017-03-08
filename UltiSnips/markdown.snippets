@@ -1,4 +1,12 @@
+snippet -d
+- [ ] ${1:title} |`!v strftime("%d,%b")`$0
+endsnippet
+
 snippet -
-- [ ] ${1:title} | `!v strftime("%d, %b")`
-$0
+- [ ] ${1:title}
+endsnippet
+
+snippet "^(\s*)(- \[.\] .*)" "Add another todo" r
+`!p snip.rv = match.group(1) + match.group(2)`
+`!p snip.rv = match.group(1)`- [ ] 
 endsnippet

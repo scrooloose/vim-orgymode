@@ -66,7 +66,7 @@ endfunction
 
 function! s:CheckBox.check() abort
     exec self.lnum . 's/- \[ \]/- [X]/e'
-    exec self.lnum . 's/- \[X\].* | \d\{2}, \w\{3}\zs.*/ > ' . strftime("%d, %b") . '/e'
+    exec self.lnum . 's/- \[X\].* |\d\{2},\w\{3}\zs.*/:' . strftime("%d,%b") . '/e'
 
     if self.allSiblingsChecked()
         let p = self.parent()
