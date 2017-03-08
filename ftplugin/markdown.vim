@@ -14,25 +14,6 @@ let g:loaded_orgymode_ftplugin = 1
 "tell markdown ftplugin to enable its magic folding
 let g:markdown_folding=1
 
-command! -nargs=0 OrgyToggle call <sid>toggleOrgy()
-function! s:toggleOrgy() abort
-    let winnr = bufwinnr("Orgyfile.md")
-    if winnr > 0
-        exec winnr . "wincmd c"
-    else
-        botright 78vs Orgyfile.md
-        setl wfw
-        setl nonu
-
-        "hack to make nerdtree et al not split the window
-        setl previewwindow
-
-        "for some reason this doesnt get run automatically and the cursor
-        "position doesn't get set
-        doautocmd bufreadpost %
-    endif
-endfunction
-
 let s:CheckBox = {}
 let g:CheckBox = s:CheckBox
 
