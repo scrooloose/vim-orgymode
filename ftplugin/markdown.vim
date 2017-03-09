@@ -1,8 +1,4 @@
-setl sw=4 sts=4 et
 syntax sync minlines=50
-setl conceallevel=2
-setl foldmethod=expr foldexpr=MarkdownFold()
-setl spell
 
 if exists("g:loaded_orgymode_ftplugin")
     finish
