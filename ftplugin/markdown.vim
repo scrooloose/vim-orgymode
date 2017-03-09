@@ -13,7 +13,6 @@ let g:CheckBox = s:CheckBox
 
 function! s:CheckBox.New(args)
     let newObj = copy(self)
-    let newObj.content = a:args['content']
     let newObj.lnum = a:args['lnum']
     let newObj.indent = a:args['indent']
     let newObj.checked = a:args['checked']
@@ -102,8 +101,7 @@ function! s:CheckBox.FromLine(lnum) abort
     return s:CheckBox.New({
         \ 'checked': l =~ '^\s*- \[X\] ',
         \ 'indent': s:CheckBox.IndentFor(l),
-        \ 'lnum': lnum,
-        \ 'content': substitute(getline(lnum),  '^\s*- \[[X ]\] ', '', '')})
+        \ 'lnum': lnum })
 endfunction
 
 function! s:CheckBox.IndentFor(s) abort
