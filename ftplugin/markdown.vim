@@ -6,7 +6,7 @@ endif
 let g:loaded_orgymode_ftplugin = 1
 
 let s:CheckBox = {}
-let g:CheckBox = s:CheckBox
+let g:OrgymodeCheckBox = s:CheckBox
 
 function! s:CheckBox.New(args)
     let newObj = copy(self)
@@ -170,7 +170,7 @@ function! s:CheckBox.parent() abort
     endwhile
 endfunction
 
-nnoremap <Plug>OrgymodeCheckToggle :call g:CheckBox.ToggleCurrent()<cr>
+nnoremap <Plug>OrgymodeCheckToggle :call OrgymodeCheckBox.ToggleCurrent()<cr>
 if !hasmapto('<Plug>OrgymodeCheckToggle')
     nmap <buffer> <c-c> <Plug>OrgymodeCheckToggle
 endif
