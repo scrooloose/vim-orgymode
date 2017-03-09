@@ -5,9 +5,6 @@ if exists("g:loaded_orgymode_ftplugin")
 endif
 let g:loaded_orgymode_ftplugin = 1
 
-"tell markdown ftplugin to enable its magic folding
-let g:markdown_folding=1
-
 let s:CheckBox = {}
 let g:CheckBox = s:CheckBox
 
