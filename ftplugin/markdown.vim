@@ -1,5 +1,3 @@
-nnoremap <buffer> <c-c> :call g:CheckBox.ToggleCurrent()<cr>
-
 setl sw=4 sts=4 et
 syntax sync minlines=50
 setl conceallevel=2
@@ -180,3 +178,8 @@ function! s:CheckBox.parent() abort
         let curCheck = s:CheckBox.FromLine(curLine)
     endwhile
 endfunction
+
+nnoremap <Plug>OrgymodeCheckToggle :call g:CheckBox.ToggleCurrent()<cr>
+if !hasmapto('<Plug>OrgymodeCheckToggle')
+    nmap <buffer> <c-c> <Plug>OrgymodeCheckToggle
+endif
